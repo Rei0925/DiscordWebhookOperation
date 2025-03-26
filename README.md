@@ -8,7 +8,7 @@ HookMaster for Discord(略称:HMD)は**とても簡単に**Discordのウェブ�
 - 🛠️ Webhookの履歴を自動保存！
 - 🔧 データはjsonで管理するので扱いやすい！  
 ### 必要条件  
-- Java21 ([DL](https://www.oracle.com/jp/java/technologies/downloads/#java21))  
+- Java21 ([DL](https://www.oracle.com/jp/java/technologies/downloads/#jdk21-windows))  
 起動には以上の条件を満たしている必要があります。
 ### 簡単な説明
 ```shell
