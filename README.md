@@ -1,2 +1,2 @@
-# DiscordWebhookOperation
-DiscordのWebHookを自由自在に操れるCUIアプリ
+# HookMaster for Discord
+DiscordのWebhookを自由自在に操作できるCUIアプリ
