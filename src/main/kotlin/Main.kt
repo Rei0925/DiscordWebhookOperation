@@ -9,13 +9,17 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import java.io.File
 import java.nio.charset.Charset
-import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Scanner
+import java.util.*
 
 // ✅ Webhook情報を管理するデータクラス
 @Serializable
-data class Webhook(var name: String, val url: String, var icon: String? = null)
+data class Webhook(var username: String, val url: String, var icon: String? = null)
+
+// JSONの設定をグローバルに1回だけ作成
+val jsonFormatter = Json { prettyPrint = true }
 
 fun main() = runBlocking {
     val client = HttpClient(CIO)
@@ -80,24 +84,23 @@ fun loadWebhooks(): MutableList<Webhook> {
     }
 }
 
-// Webhook登録時にエンコーディング指定なしで保存
 fun registerWebhook(webhooks: MutableList<Webhook>) {
     val scanner = Scanner(System.`in`)
 
     print("Webhook名: ")
-    val name = scanner.nextLine()
+    val username = scanner.nextLine()
 
     print("Webhook URL: ")
     val url = scanner.nextLine()
 
-    webhooks.add(Webhook(name, url))
+    webhooks.add(Webhook(username, url))
 
-    val json = Json.encodeToJsonElement(mapOf("webhooks" to webhooks))
-    File("webhooks.json").writeText(json.toString())  // エンコーディング指定なし
+    // インデントを有効にしたJSONを保存
+    val json = jsonFormatter.encodeToJsonElement(mapOf("webhooks" to webhooks))
+    File("webhooks.json").writeText(json.toString())  // インデント付きで保存
 
     println("Webhookを登録しました！")
 }
-
 
 suspend fun sendMessage(client: HttpClient, webhooks: List<Webhook>) {
     if (webhooks.isEmpty()) {
@@ -108,7 +111,7 @@ suspend fun sendMessage(client: HttpClient, webhooks: List<Webhook>) {
     // 登録済みWebhookの表示
     println("\n登録済みWebhook:")
     webhooks.forEachIndexed { index, webhook ->
-        println("${index + 1}. ${webhook.name} (${webhook.url})")
+        println("${index + 1}. ${webhook.username} (${webhook.url})")
     }
 
     print("\n送信するWebhookの番号を選択: ")
@@ -136,17 +139,20 @@ suspend fun sendMessage(client: HttpClient, webhooks: List<Webhook>) {
     print("フッター名: ")
     val footerName = scanner.nextLine()
 
+    // 現在の日時をZonedDateTimeに変換
+    val timestamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE_TIME)
+
     val payload = buildJsonObject {
-        put("username", webhook.name)
+        put("username", webhook.username)
         put("embeds", buildJsonArray {
             add(buildJsonObject {
                 put("title", title)
                 put("description", description)
                 put("color", color)
                 put("footer", buildJsonObject {
-                    put("text", footerName)
-                    put("timestamp", LocalDateTime.now().toString()) // 現在の日時を設定
+                    put("text", footerName) // フッターのテキスト
                 })
+                put("timestamp", timestamp)  // 正しいタイムスタンプ形式を使用
             })
         })
         webhook.icon?.let {
@@ -217,7 +223,7 @@ fun changeName(webhooks: MutableList<Webhook>) {
     // 登録済みWebhookの表示
     println("\n登録済みWebhook:")
     webhooks.forEachIndexed { index, webhook ->
-        println("${index + 1}. ${webhook.name} (${webhook.url})")
+        println("${index + 1}. ${webhook.username} (${webhook.url})")
     }
 
     print("\n名前を変更したいWebhookの番号を選択: ")
@@ -271,7 +277,7 @@ fun changeName(webhooks: MutableList<Webhook>) {
     }
 
     // Webhookの名前変更
-    webhook.name = newName
+    webhook.username = newName
 
     val json = Json.encodeToJsonElement(mapOf("webhooks" to webhooks))
     File("webhooks.json").writeText(json.toString(), Charset.forName("UTF-8"))
