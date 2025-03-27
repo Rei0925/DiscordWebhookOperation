@@ -28,6 +28,8 @@ dependencies {
 
     implementation("org.slf4j:slf4j-api:2.0.0")
     implementation("ch.qos.logback:logback-classic:1.4.6") // Logbackの依存関係を追加
+
+    implementation("org.jline:jline:3.25.1")  // 最新版のJLineを追加
 }
 
 kotlin {
@@ -53,5 +55,9 @@ tasks {
         manifest {
             attributes["Main-Class"] = "com.github.Rei0925.MainKt"  // メインクラス
         }
+
+        archiveFileName.set("HookMaster-for-Discord.jar")  // 出力ファイル名
+        mergeServiceFiles()
     }
 }
+

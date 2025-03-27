@@ -8,7 +8,7 @@ HookMaster for Discord(略称:HMD)は**とても簡単に**Discordのウェブ�
 - 🛠️ Webhookの履歴を自動保存！
 - 🔧 データはjsonで管理するので扱いやすい！  
 ### 必要条件  
-- Java21 ([DL](https://www.oracle.com/jp/java/technologies/downloads/#jdk21-windows))  
+- Java21 ([DL](https://www.oracle.com/jp/java/technologies/downloads/#jdk21))  
 起動には以上の条件を満たしている必要があります。
 ### 簡単な説明
 ```shell
@@ -17,7 +17,8 @@ HookMaster for Discord(略称:HMD)は**とても簡単に**Discordのウェブ�
 2. メッセージを送信
 3. 履歴を表示
 4. Webhookの名前を変更
-5. 終了
+5. Webhookを削除
+6. 終了
 ```
 起動時のホーム画面です。  
 `選択番号:`  
@@ -26,7 +27,8 @@ HookMaster for Discord(略称:HMD)は**とても簡単に**Discordのウェブ�
 > 2. [メッセージを送信](#機能2----メッセージを送信)
 > 3. [履歴を表示](#機能3----履歴を表示)
 > 4. [Webhookの名前を変更](#機能4----webhookの名前を変更)
-> 5. [終了](#機能5----終了)
+> 5. [Webhookの削除](#機能5----Webhookの削除)
+> 6. [終了](#機能6----終了)
 
 ## (機能1)    Webhookを登録
 コマンドを実行すると、  
@@ -43,7 +45,9 @@ WebhookのURLの取得方法がわからない場合は[こちら](#おまけ---
 上に同じく
 ## (機能4)    Webhookの名前を変更
 上に同じく
-## (機能5)    終了
+## (機能5)    Webhookの削除
+上に同じく
+## (機能6)    終了
 CUIを閉じます。
 
 ## (おまけ)    Webhookの作り方
